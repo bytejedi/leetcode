@@ -1,10 +1,9 @@
 package median_of_two_sorted_arrays
 
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-	var nums []int
-
 	l1 := len(nums1)
 	l2 := len(nums2)
+	var nums = make([]int, l1+l2)
 	var longI, shortI int
 	var longNums, shortNums []int
 	if l1 > l2 {
@@ -18,24 +17,30 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 		longNums = nums2
 		shortNums = nums1
 	}
-	i1, i2 := 0, 0
+	i, i1, i2 := 0, 0, 0
 
 	for i1 < longI {
 		if i2 < shortI {
 			if longNums[i1] < shortNums[i2] {
-				nums = append(nums, longNums[i1])
+				nums[i] = longNums[i1]
+				i++
 				i1++
 			} else {
-				nums = append(nums, shortNums[i2])
+				nums[i] = shortNums[i2]
+				i++
 				i2++
 			}
 		} else {
-			nums = append(nums, longNums[i1])
+			nums[i] = longNums[i1]
+			i++
 			i1++
 		}
 	}
 	if i2 < shortI {
-		nums = append(nums, shortNums[i2:]...)
+		for _, num := range shortNums[i2:] {
+			nums[i] = num
+			i++
+		}
 	}
 
 	l := len(nums)
